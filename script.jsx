@@ -15,6 +15,8 @@ const todo = (state, action) => {
         ...state,
         completed: !state.completed
       };
+    default:
+      return state;
   }
 }
 
@@ -67,7 +69,7 @@ class TodoApp extends Component {
         <button onClick={() => {
           store.dispatch({
             type: 'ADD_TODO',
-            text: 'Test',
+            text: this.input.value,
             id: nextTodoId++
           });
         }}>
@@ -75,7 +77,20 @@ class TodoApp extends Component {
         </button>
         <ul>
           {this.props.todos.map(todo =>
-            <li key={todo.id}>
+            <li key={todo.id}
+                onClick={() => {
+                  store.dispatch({
+                    type: 'TOGGLE_TODO',
+                    id: todo.id
+                  })
+                }}
+                style={{
+                  textDecoration:
+                    todo.completed ?
+                      'line-through' :
+                      'none'
+                }}
+            >
               {todo.text}
             </li>
           )}
