@@ -108,7 +108,7 @@ class FilterLink extends Component {
 }
 
 FilterLink.contextTypes = {
-  store: React.PropTypes.object
+  store: React.PropTypes
 };
 
 const Footer = () => {
@@ -118,21 +118,18 @@ const Footer = () => {
       {' '}
       <FilterLink
         filter='SHOW_ALL'
-        store={store}
       >
         All
       </FilterLink>
       {' '}
       <FilterLink
         filter='SHOW_ACTIVE'
-        store={store}
       >
         Active
       </FilterLink>
       {' '}
       <FilterLink
         filter='SHOW_COMPLETED'
-        store={store}
       >
         Completed
       </FilterLink>
@@ -172,6 +169,7 @@ const TodoList = ({
   </ul>
 );
 
+let nextTodoId = 0;
 const AddTodo = (props, { store }) => {
   let input;
 
@@ -194,7 +192,7 @@ const AddTodo = (props, { store }) => {
   );
 }
 AddTodo.contextTypes = {
-  store: React.PropTypes.object
+  store: React.PropTypes
 };
 
 const getVisibleTodos = (
