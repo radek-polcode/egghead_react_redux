@@ -52,9 +52,6 @@ const todoApp = combineReducers({
   visibilityFilter
 });
 
-const { createStore } = Redux;
-const store = createStore(todoApp);
-
 const { Component } = React;
 
 const Link = ({
@@ -78,6 +75,7 @@ const Link = ({
 
 class FilterLink extends Component {
   componentDidMount() {
+    const { store } = this.props;
     this.unsubscribe = store.subscribe(() =>
       this.forceUpdate()
     );
@@ -88,6 +86,7 @@ class FilterLink extends Component {
   }
   render() {
     const props = this.props;
+    const { store } = props;
     const state = store.getState();
 
     return (
@@ -108,25 +107,28 @@ class FilterLink extends Component {
   }
 }
 
-const Footer = () => {
+const Footer = ({ store }) => {
   return(
     <p>
       Show:
       {' '}
       <FilterLink
         filter='SHOW_ALL'
+        store={store}
       >
         All
       </FilterLink>
       {' '}
       <FilterLink
         filter='SHOW_ACTIVE'
+        store={store}
       >
         Active
       </FilterLink>
       {' '}
       <FilterLink
         filter='SHOW_COMPLETED'
+        store={store}
       >
         Completed
       </FilterLink>
@@ -166,9 +168,7 @@ const TodoList = ({
   </ul>
 );
 
-const AddTodo = ({
-  onAddClick
-}) => {
+const AddTodo = ({ store }) => {
   let input;
 
   return (
@@ -210,6 +210,7 @@ const getVisibleTodos = (
 
 class VisibleTodoList extends Component {
   componentDidMount() {
+    const { store } = this.props;
     this.unsubscribe = store.subscribe(() =>
       this.forceUpdate()
     );
@@ -221,6 +222,7 @@ class VisibleTodoList extends Component {
 
   render() {
     const props = this.props;
+    const store = props;
     const state = store.getState();
 
     return (
@@ -243,15 +245,17 @@ class VisibleTodoList extends Component {
 }
 
 let nextTodoId = 0;
-const TodoApp = () => (
+const TodoApp = ({ store }) => (
   <div>
-    <AddTodo />
-    <VisibleTodoList />
-    <Footer />
+    <AddTodo store={store} />
+    <VisibleTodoList store={store} />
+    <Footer store={store} />
   </div>
 );
 
+const { createStore } = Redux;
+
 ReactDOM.render(
-  <TodoApp />,
+  <TodoApp store={createStore(todoApp)}/>,
   document.getElementById('root')
 );
